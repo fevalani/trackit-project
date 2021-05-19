@@ -1,70 +1,81 @@
 import { Link, useHistory } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import Loader from "react-loader-spinner";
 
 import logo from "../../assets/Logo.png";
-
 import Button from "./Button";
 import Text from "./Text";
 import Log from "./Log";
-import UserContext from "../../contexts/UserContext";
 
-export default function Login() {
+export default function SignUp() {
   const [dataPost, setDataPost] = useState({});
   const [disabled, setDisabled] = useState(false);
-  const { setUser } = useContext(UserContext);
   const history = useHistory();
 
-  function LogInClick(event) {
+  function SignUp(event) {
     event.preventDefault();
     setDisabled(true);
     const promise = axios.post(
-      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
+      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up",
       dataPost
     );
-    promise.then((response) => {
-      setUser(response.data);
-      history.push("/hoje");
-    });
+
+    promise.then(() => history.push("/"));
     promise.catch(() => {
       setDisabled(false);
-      alert("Erro no login!");
+      alert("Ocorreu um erro no cadastro!!");
     });
   }
 
   return (
     <Log>
       <img src={logo} alt="Logo Trackit" />
-      <form onSubmit={LogInClick}>
+      <form onSubmit={SignUp}>
         <Text
           type="text"
           placeholder="email"
-          value={dataPost.email}
           disabled={disabled}
+          value={dataPost.email}
           onChange={(e) => setDataPost({ ...dataPost, email: e.target.value })}
           required
         />
         <Text
-          type="password"
+          type="text"
           placeholder="senha"
-          value={dataPost.password}
           disabled={disabled}
+          value={dataPost.password}
           onChange={(e) =>
             setDataPost({ ...dataPost, password: e.target.value })
           }
+          required
+        />
+        <Text
+          type="text"
+          placeholder="nome"
+          disabled={disabled}
+          value={dataPost.name}
+          onChange={(e) => setDataPost({ ...dataPost, name: e.target.value })}
+          required
+        />
+        <Text
+          type="text"
+          placeholder="foto"
+          disabled={disabled}
+          value={dataPost.image}
+          onChange={(e) => setDataPost({ ...dataPost, image: e.target.value })}
           required
         />
         <Button>
           {disabled ? (
             <Loader type="ThreeDots" color="#FFFFFF" height={13} width={51} />
           ) : (
-            "Entrar"
+            "Cadastrar"
           )}
         </Button>
       </form>
-      <Link to="/cadastro">
-        <span>Não tem uma conta? Cadastre-se!</span>
+      <Link to="/">
+        <span>Já tem uma conta? Faça login!</span>
       </Link>
     </Log>
   );

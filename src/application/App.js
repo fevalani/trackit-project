@@ -6,7 +6,7 @@ import "./styles/reset.css";
 import "./styles/font.css";
 
 import Login from "./components/login/Login";
-import SignIn from "./components/login/SignIn";
+import SignUp from "./components/login/SignUp";
 import TodayHabits from "./components/main/TodayHabits";
 import Habits from "./components/main/Habits";
 import Historical from "./components/main/Historical";
@@ -22,7 +22,7 @@ export default function App() {
             <Login />
           </Route>
           <Route path="/cadastro" exact>
-            <SignIn />
+            <SignUp />
           </Route>
           <Route path="/hoje" exact>
             <TodayHabits />
