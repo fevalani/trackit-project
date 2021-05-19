@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const Button = styled.button`
   width: 100%;
@@ -13,6 +13,13 @@ const Button = styled.button`
 
   color: #fff;
   background-color: #52b6ff;
+
+  ${(props) =>
+    props.disabled &&
+    css`
+      opacity: 0.7;
+      pointerevents: "none";
+    `}
 `;
 
 export default Button;

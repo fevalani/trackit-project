@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const Text = styled.input`
   width: 100%;
@@ -16,6 +16,14 @@ const Text = styled.input`
     font-size: 20px;
     color: #dbdbdb;
   }
+
+  ${(props) =>
+    props.disabled &&
+    css`
+      background-color: #f2f2f2;
+      opacity: 0.7;
+      pointerevents: "none";
+    `}
 `;
 
 export default Text;
