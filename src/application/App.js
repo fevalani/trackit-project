@@ -11,10 +11,10 @@ export default function App() {
     <>
       <BrowserRouter>
         <Switch>
-          <Route path="/">
+          <Route path="/" exact>
             <Login />
           </Route>
-          <Route path="/cadastro">
+          <Route path="/cadastro" exact>
             <SignIn />
           </Route>
         </Switch>

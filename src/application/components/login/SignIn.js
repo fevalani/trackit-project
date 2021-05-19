@@ -1,65 +1,46 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 import logo from "../../assets/Logo.png";
-import styled from "styled-components";
+import Button from "./Button";
+import Text from "./Text";
+import Log from "./Log";
 
 export default function SignIn() {
+  const [dataPost, setDataPost] = useState({});
+  console.log(dataPost);
+
   return (
     <Log>
-      <Logo src={logo} />
-      <Text type="text" placeholder="email" />
-      <Text type="text" placeholder="senha" />
-      <Text type="text" placeholder="nome" />
-      <Text type="text" placeholder="foto" />
-      <Button type="button" value="Cadastrar" />
+      <img src={logo} alt="Logo Trackit" />
+      <Text
+        type="text"
+        placeholder="email"
+        value={dataPost.email}
+        onChange={(e) => setDataPost({ ...dataPost, email: e.target.value })}
+      />
+      <Text
+        type="text"
+        placeholder="senha"
+        value={dataPost.password}
+        onChange={(e) => setDataPost({ ...dataPost, password: e.target.value })}
+      />
+      <Text
+        type="text"
+        placeholder="nome"
+        value={dataPost.name}
+        onChange={(e) => setDataPost({ ...dataPost, name: e.target.value })}
+      />
+      <Text
+        type="text"
+        placeholder="foto"
+        value={dataPost.image}
+        onChange={(e) => setDataPost({ ...dataPost, image: e.target.value })}
+      />
+      <Button type="button">Cadastrar</Button>
       <Link to="/">
-        <a>Já tem uma conta? Faça login!</a>
+        <span>Já tem uma conta? Faça login!</span>
       </Link>
     </Log>
   );
 }
-
-const Log = styled.div`
-  width: 303px;
-
-  margin: 68px auto;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Logo = styled.img`
-  width: 180px;
-
-  margin-bottom: 32px;
-`;
-
-const Text = styled.input`
-  width: 100%;
-  height: 45px;
-
-  border: 1px solid #d4d4d4;
-  border-radius: 5px;
-
-  margin-bottom: 6px;
-
-  ::placeholder {
-    font-size: 20px;
-    color: #dbdbdb;
-  }
-`;
-
-const Button = styled.button`
-  width: 100%;
-  height: 45px;
-
-  border: 1px solid #d4d4d4;
-  border-radius: 5px;
-
-  margin-bottom: 25px;
-
-  color: #fff;
-  background-color: #52b6ff;
-`;
