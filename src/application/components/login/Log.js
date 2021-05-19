@@ -1,13 +1,15 @@
 import styled from "styled-components";
 
 const Log = styled.div`
-  width: 303px;
+  width: 100%;
+  height: 100vh;
 
-  margin: 68px auto;
+  background-color: #fff;
+
+  padding: 68px 36px;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 
   img {
