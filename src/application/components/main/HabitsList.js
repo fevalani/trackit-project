@@ -4,6 +4,8 @@ import { useContext, useState } from "react";
 import UserContext from "../../contexts/UserContext";
 import axios from "axios";
 
+import weekdayData from "./weekdayData";
+
 export default function HabitsList({ data }) {
   const { user } = useContext(UserContext);
   const [showDeleteButton, setShowDeleteButton] = useState([]);
@@ -47,27 +49,13 @@ export default function HabitsList({ data }) {
         )}
       </PositionTopHabits>
       <Weekdays>
-        <Day id="7" list={item.days}>
-          D
-        </Day>
-        <Day id="1" list={item.days}>
-          S
-        </Day>
-        <Day id="2" list={item.days}>
-          T
-        </Day>
-        <Day id="3" list={item.days}>
-          Q
-        </Day>
-        <Day id="4" list={item.days}>
-          Q
-        </Day>
-        <Day id="5" list={item.days}>
-          S
-        </Day>
-        <Day id="6" list={item.days}>
-          S
-        </Day>
+        {weekdayData.map((i) =>
+          item.days.includes(i.id) ? (
+            <DaySelected key={i.id}>{i.name}</DaySelected>
+          ) : (
+            <Day id={i.id}>{i.name}</Day>
+          )
+        )}
       </Weekdays>
     </ContainerHabits>
   ));
@@ -121,17 +109,26 @@ const Day = styled.li`
   justify-content: center;
   align-items: center;
 
-  ${(props) => {
-    props.list.includes(parseInt(props.id))
-      ? css`
-          background-color: #fff;
-          color: #dbdbdb;
-        `
-      : css`
-          background-color: #dbdbdb;
-          color: #fff;
-        `;
-  }}
+  background-color: #fff;
+  color: #dbdbdb;
+`;
+
+const DaySelected = styled.li`
+  width: 30px;
+  height: 30px;
+  margin-right: 4px;
+
+  border: 1px solid #d4d4d4;
+  border-radius: 5px;
+
+  font-size: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #dbdbdb;
+  color: #fff;
 `;
 
 const fadeIn = keyframes`

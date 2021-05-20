@@ -3,10 +3,10 @@ import { useContext, useState } from "react";
 import styled, { css } from "styled-components";
 import UserContext from "../../contexts/UserContext";
 import Loader from "react-loader-spinner";
+import weekdayData from "./weekdayData";
 
-export default function AddHabits({ setEnable }) {
+export default function AddHabits({ setEnable, post, setPost, setLoading }) {
   const { user } = useContext(UserContext);
-  const [post, setPost] = useState({ name: "", days: [] });
   const [disabled, setDisabled] = useState(false);
 
   function createHabit() {
@@ -24,10 +24,10 @@ export default function AddHabits({ setEnable }) {
     );
 
     request.then(() => {
-      alert("Deu bom");
       setPost({ name: "", days: [] });
       setEnable(false);
       setDisabled(false);
+      setLoading(true);
     });
     request.catch(() => {
       alert("Erro");
@@ -36,6 +36,7 @@ export default function AddHabits({ setEnable }) {
   }
 
   function dayArray(num) {
+    if (disabled) return;
     let array;
     if (post.days.length === 0) {
       array = [num];
@@ -54,65 +55,21 @@ export default function AddHabits({ setEnable }) {
       <Input
         placeholder="nome do hábito"
         onChange={(e) => setPost({ ...post, name: e.target.value })}
+        value={post.name || ""}
         disabled={disabled}
       />
       <Weekdays>
-        <Day
-          id="7"
-          list={post.days}
-          onClick={() => dayArray(7)}
-          disabled={disabled}
-        >
-          D
-        </Day>
-        <Day
-          id="1"
-          list={post.days}
-          onClick={() => dayArray(1)}
-          disabled={disabled}
-        >
-          S
-        </Day>
-        <Day
-          id="2"
-          list={post.days}
-          onClick={() => dayArray(2)}
-          disabled={disabled}
-        >
-          T
-        </Day>
-        <Day
-          id="3"
-          list={post.days}
-          onClick={() => dayArray(3)}
-          disabled={disabled}
-        >
-          Q
-        </Day>
-        <Day
-          id="4"
-          list={post.days}
-          onClick={() => dayArray(4)}
-          disabled={disabled}
-        >
-          Q
-        </Day>
-        <Day
-          id="5"
-          list={post.days}
-          onClick={() => dayArray(5)}
-          disabled={disabled}
-        >
-          S
-        </Day>
-        <Day
-          id="6"
-          list={post.days}
-          onClick={() => dayArray(6)}
-          disabled={disabled}
-        >
-          S
-        </Day>
+        {weekdayData.map((i) =>
+          post.days.includes(i.id) ? (
+            <DaySelected key={i.id} onClick={() => dayArray(i.id)}>
+              {i.name}
+            </DaySelected>
+          ) : (
+            <Day key={i.id} onClick={() => dayArray(i.id)}>
+              {i.name}
+            </Day>
+          )
+        )}
       </Weekdays>
       <PositionButton>
         <CancelButton onClick={() => setEnable(false)}>Cancelar</CancelButton>
@@ -138,6 +95,10 @@ const CreateHabits = styled.div`
   background-color: #fff;
 
   border-radius: 5px;
+
+  position: fixed;
+  top: 147px;
+  left: clac(100vh - 340px/2);
 `;
 
 const Input = styled.input`
@@ -192,25 +153,24 @@ const Day = styled.li`
 
   background-color: #fff;
   color: #dbdbdb;
+`;
 
-  ${(props) => {
-    props.disabled &&
-      css`
-        pointerevents: "none";
-      `;
-  }}
+const DaySelected = styled.li`
+  width: 30px;
+  height: 30px;
+  margin-right: 4px;
 
-  ${(props) => {
-    props.list.includes(parseInt(props.id))
-      ? css`
-          background-color: #fff;
-          color: #dbdbdb;
-        `
-      : css`
-          background-color: #dbdbdb;
-          color: #fff;
-        `;
-  }}
+  border: 1px solid #d4d4d4;
+  border-radius: 5px;
+
+  font-size: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #dbdbdb;
+  color: #fff;
 `;
 
 const PositionButton = styled.div`

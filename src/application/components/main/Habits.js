@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import UserContext from "../../contexts/UserContext";
+
+import Loader from "react-loader-spinner";
 
 import Header from "../header-menu/Header";
 import Menu from "../header-menu/Menu";
@@ -12,6 +14,8 @@ export default function Habits() {
   const { user } = useContext(UserContext);
   const [enable, setEnable] = useState(false);
   const [data, setData] = useState([]);
+  const [postAddHabits, setPostAddHabits] = useState({ name: "", days: [] });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const config = {
@@ -24,26 +28,44 @@ export default function Habits() {
       config
     );
 
-    request.then((response) => setData(response.data));
-    request.catch(() => console.log("deuruim"));
-  }, []);
+    request.then((response) => {
+      setData(response.data);
+      setLoading(false);
+    });
+    request.catch(() => console.log("deuruimnoget"));
+  }, [loading]);
 
   return (
     <>
       <Header />
       <Container>
-        <TopContainer>
+        <TopContainer enable={enable}>
           <Title>Meus hábitos</Title>
           <Button onClick={() => setEnable(true)}>+</Button>
         </TopContainer>
-        {enable ? <AddHabits setEnable={setEnable} /> : ""}
-        {data.length === 0 ? (
+        {enable ? (
+          <AddHabits
+            setLoading={setLoading}
+            setEnable={setEnable}
+            post={postAddHabits}
+            setPost={setPostAddHabits}
+          />
+        ) : (
+          ""
+        )}
+        {loading ? (
+          <PositionLoader>
+            <Loader type="ThreeDots" color="#52B6FF" height={30} width={90} />
+          </PositionLoader>
+        ) : data.length === 0 ? (
           <p>
             Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
             começar a trackear!
           </p>
         ) : (
-          <HabitsList data={data} />
+          <PositionList enable={enable}>
+            <HabitsList data={data} />
+          </PositionList>
         )}
       </Container>
       <Menu />
@@ -77,6 +99,26 @@ const TopContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  ${(props) =>
+    props.enable
+      ? css`
+          width: 340px;
+          position: fixed;
+          top: 92px;
+          left: calc(100vw = 340px / 2);
+        `
+      : ""}
+`;
+
+const PositionList = styled.div`
+  margin-bottom: 110px;
+  ${(props) =>
+    props.enable
+      ? css`
+          margin-top: 337px;
+        `
+      : ""}
 `;
 
 const Button = styled.button`
@@ -90,4 +132,12 @@ const Button = styled.button`
 
   color: #fff;
   background-color: #52b6ff;
+`;
+
+const PositionLoader = styled.div`
+  height: 200px;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 `;
