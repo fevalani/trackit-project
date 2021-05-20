@@ -54,6 +54,7 @@ const ContainerMenu = styled.div`
 const MenuButton = styled.p`
   font-size: 18px;
   color: #52b6ff;
+  cursor: pointer;
 `;
 
 const CircularButton = styled.div`
@@ -63,4 +64,6 @@ const CircularButton = styled.div`
   left: calc(50vw - 91px / 2);
   bottom: 10px;
   z-index: 11;
+
+  cursor: pointer;
 `;
