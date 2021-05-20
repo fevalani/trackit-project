@@ -1,19 +1,15 @@
-import Header from "../header-menu/Header";
-import Menu from "../header-menu/Menu";
 import { useContext } from "react";
 import UserContext from "../../contexts/UserContext";
-import styled from "styled-components";
+
+import Header from "../header-menu/Header";
+import Menu from "../header-menu/Menu";
 
 export default function TodayHabits() {
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   return (
-    <Body>
-      <Header user={user} />
+    <>
+      <Header />
       <Menu />
-    </Body>
+    </>
   );
 }
-
-const Body = styled.div`
-  background-color: #e5e5e5;
-`;

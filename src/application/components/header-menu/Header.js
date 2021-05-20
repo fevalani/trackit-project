@@ -2,15 +2,12 @@ import { useContext } from "react";
 import styled from "styled-components";
 import UserContext from "../../contexts/UserContext";
 
-import lula from "../../assets/evfQlSZ__400x400.jpg";
-
 export default function Header() {
-  const user = useContext(UserContext);
-  console.log(user);
+  const { user } = useContext(UserContext);
   return (
     <Head>
       <Title>TrackIt</Title>
-      <Avatar src={lula} alt="avatar usuário" />
+      <Avatar src={user.image} alt="avatar usuário" />
     </Head>
   );
 }

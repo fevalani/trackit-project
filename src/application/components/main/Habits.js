@@ -6,16 +6,25 @@ import UserContext from "../../contexts/UserContext";
 import Header from "../header-menu/Header";
 import Menu from "../header-menu/Menu";
 import AddHabits from "./AddHabits";
+import HabitsList from "./HabitsList";
 
 export default function Habits() {
-  const user = useContext(UserContext);
-  console.log(user);
+  const { user } = useContext(UserContext);
   const [enable, setEnable] = useState(false);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    const request = axios.get("#");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
+    const request = axios.get(
+      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
+      config
+    );
 
-    request.then((response) => console.log(response));
+    request.then((response) => setData(response.data));
     request.catch(() => console.log("deuruim"));
   }, []);
 
@@ -28,10 +37,14 @@ export default function Habits() {
           <Button onClick={() => setEnable(true)}>+</Button>
         </TopContainer>
         {enable ? <AddHabits setEnable={setEnable} /> : ""}
-        <p>
-          Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
-          começar a trackear!
-        </p>
+        {data.length === 0 ? (
+          <p>
+            Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
+            começar a trackear!
+          </p>
+        ) : (
+          <HabitsList data={data} />
+        )}
       </Container>
       <Menu />
     </>
@@ -39,11 +52,11 @@ export default function Habits() {
 }
 
 const Container = styled.div`
-  margin-top: 91px;
+  margin: 91px 0;
   padding-left: 16px;
   padding-right: 16px;
 
-  width: calc(100vw - 18px);
+  width: 100%;
 
   p {
     font-size: 18px;
