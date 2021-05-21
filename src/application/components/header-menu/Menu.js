@@ -2,8 +2,11 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { useContext } from "react";
+import PercentContext from "../../contexts/PercentContext";
 
 export default function Menu() {
+  const { percent } = useContext(PercentContext);
   return (
     <>
       <ContainerMenu>
@@ -17,7 +20,7 @@ export default function Menu() {
       <Link to="/hoje">
         <CircularButton>
           <CircularProgressbar
-            value={75}
+            value={percent}
             text={"Hoje"}
             backgroundPadding={6}
             background

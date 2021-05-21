@@ -1,6 +1,7 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { useState } from "react";
 
+import PercentContext from "./contexts/PercentContext";
 import UserContext from "./contexts/UserContext";
 import "./styles/reset.css";
 import "./styles/font.css";
@@ -13,6 +14,7 @@ import Historical from "./components/main/historical/Historical";
 
 export default function App() {
   const [user, setUser] = useState(null);
+  const [percent, setPercent] = useState(null);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
@@ -24,15 +26,17 @@ export default function App() {
           <Route path="/cadastro" exact>
             <SignUp />
           </Route>
-          <Route path="/hoje" exact>
-            <TodayHabits />
-          </Route>
-          <Route path="/habitos" exact>
-            <Habits />
-          </Route>
-          <Route path="/historico" exact>
-            <Historical />
-          </Route>
+          <PercentContext.Provider value={{ percent, setPercent }}>
+            <Route path="/hoje" exact>
+              <TodayHabits />
+            </Route>
+            <Route path="/habitos" exact>
+              <Habits />
+            </Route>
+            <Route path="/historico" exact>
+              <Historical />
+            </Route>
+          </PercentContext.Provider>
         </Switch>
       </BrowserRouter>
     </UserContext.Provider>

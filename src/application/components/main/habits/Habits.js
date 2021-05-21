@@ -72,13 +72,13 @@ export default function Habits() {
 }
 
 const Container = styled.div`
-  margin: 111px 0;
+  margin: 91px 0 111px;
   padding-left: 16px;
   padding-right: 16px;
 
   width: 100%;
 
-  p {
+  > p {
     font-size: 18px;
     line-height: 22.47px;
   }
