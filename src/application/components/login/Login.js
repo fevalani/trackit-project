@@ -16,6 +16,12 @@ export default function Login() {
   const { setUser } = useContext(UserContext);
   const history = useHistory();
 
+  if (!!localStorage.user) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    setUser(user);
+    history.push("/hoje");
+  }
+
   function LogInClick(event) {
     event.preventDefault();
     setDisabled(true);
@@ -24,6 +30,7 @@ export default function Login() {
       dataPost
     );
     promise.then((response) => {
+      localStorage.setItem("user", JSON.stringify(response.data));
       setUser(response.data);
       history.push("/hoje");
     });

@@ -1,38 +1,51 @@
 import styled, { css } from "styled-components";
 import { Checkbox } from "react-ionicons";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import UserContext from "../../../contexts/UserContext";
 import axios from "axios";
 
 export default function Task({ item, setLoading }) {
   const { user } = useContext(UserContext);
+  const [selected, setSelected] = useState(item);
 
   function checkbox(id) {
+    const toggle = !selected.done;
+    const sequence = selected.currentSequence;
     const config = {
       headers: {
         Authorization: `Bearer ${user.token}`,
       },
     };
-    if (item.done) {
+    if (selected.done) {
+      setSelected({ ...selected, done: toggle, currentSequence: sequence - 1 });
       const request = axios.post(
         `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`,
-        item,
+        selected,
         config
       );
       request.then(() => {
         setLoading(true);
       });
-      request.catch(() => alert("deuruimnopost"));
+      request.catch(() => {
+        setSelected({ ...selected, done: toggle });
+        alert("deuruimnopost");
+        setLoading(true);
+      });
     } else {
+      setSelected({ ...selected, done: toggle, currentSequence: sequence + 1 });
       const request = axios.post(
         `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`,
-        item,
+        selected,
         config
       );
       request.then(() => {
         setLoading(true);
       });
-      request.catch(() => alert("deuruimnopost"));
+      request.catch(() => {
+        setSelected({ ...selected, done: toggle });
+        setLoading(true);
+        alert("deuruimnopost");
+      });
     }
   }
 
@@ -42,15 +55,16 @@ export default function Task({ item, setLoading }) {
         <Title>{item.name}</Title>
         <MiniText>
           Sequência atual:{" "}
-          <Sequence selected={item.done}>
-            {item.currentSequence} {item.currentSequence === 1 ? "dia" : "dias"}
+          <Sequence selected={selected.done}>
+            {selected.currentSequence}{" "}
+            {item.currentSequence === 1 ? "dia" : "dias"}
           </Sequence>
         </MiniText>
         <MiniText>
           Seu recorde:{" "}
           <Record
             selected={
-              item.done && item.currentSequence === item.highestSequence
+              selected.done && item.currentSequence === item.highestSequence
             }
           >
             {item.highestSequence} {item.highestSequence === 1 ? "dia" : "dias"}
@@ -58,7 +72,7 @@ export default function Task({ item, setLoading }) {
         </MiniText>
       </div>
       <Checkbox
-        color={item.done ? "#8FC549" : "#EBEBEB"}
+        color={selected.done ? "#8FC549" : "#EBEBEB"}
         height="69px"
         width="69px"
       />
