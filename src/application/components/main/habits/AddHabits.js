@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useContext, useState } from "react";
 import styled, { css } from "styled-components";
-import UserContext from "../../contexts/UserContext";
+import UserContext from "../../../contexts/UserContext";
 import Loader from "react-loader-spinner";
-import weekdayData from "./weekdayData";
+import weekdayData from "../weekdayData";
 
 export default function AddHabits({ setEnable, post, setPost, setLoading }) {
   const { user } = useContext(UserContext);
@@ -59,13 +59,13 @@ export default function AddHabits({ setEnable, post, setPost, setLoading }) {
         disabled={disabled}
       />
       <Weekdays>
-        {weekdayData.map((i) =>
-          post.days.includes(i.id) ? (
-            <DaySelected key={i.id} onClick={() => dayArray(i.id)}>
+        {weekdayData.map((i, j) =>
+          post.days.includes(j) ? (
+            <DaySelected key={j} onClick={() => dayArray(j)}>
               {i.name}
             </DaySelected>
           ) : (
-            <Day key={i.id} onClick={() => dayArray(i.id)}>
+            <Day key={j} onClick={() => dayArray(j)}>
               {i.name}
             </Day>
           )
@@ -95,10 +95,6 @@ const CreateHabits = styled.div`
   background-color: #fff;
 
   border-radius: 5px;
-
-  position: fixed;
-  top: 147px;
-  left: clac(100vh - 340px/2);
 `;
 
 const Input = styled.input`

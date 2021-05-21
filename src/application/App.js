@@ -7,9 +7,9 @@ import "./styles/font.css";
 
 import Login from "./components/login/Login";
 import SignUp from "./components/login/SignUp";
-import TodayHabits from "./components/main/TodayHabits";
-import Habits from "./components/main/Habits";
-import Historical from "./components/main/Historical";
+import TodayHabits from "./components/main/today/TodayHabits";
+import Habits from "./components/main/habits/Habits";
+import Historical from "./components/main/historical/Historical";
 
 export default function App() {
   const [user, setUser] = useState(null);

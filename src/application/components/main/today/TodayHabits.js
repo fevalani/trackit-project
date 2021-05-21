@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import UserContext from "../../contexts/UserContext";
+import UserContext from "../../../contexts/UserContext";
 
-import Header from "../header-menu/Header";
-import Menu from "../header-menu/Menu";
+import Header from "../../header-menu/Header";
+import Menu from "../../header-menu/Menu";
 
 export default function TodayHabits() {
   const { user } = useContext(UserContext);
@@ -24,10 +24,11 @@ const TopContainer = styled.div`
 
   padding: 0 16px;
   margin-top: 98px;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
 `;
 
 const Title = styled.p`
+  margin-bottom: 5px;
   font-size: 23px;
   color: #126ba5;
 `;

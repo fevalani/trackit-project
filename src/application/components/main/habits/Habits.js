@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import UserContext from "../../contexts/UserContext";
+import UserContext from "../../../contexts/UserContext";
 
 import Loader from "react-loader-spinner";
 
-import Header from "../header-menu/Header";
-import Menu from "../header-menu/Menu";
+import Header from "../../header-menu/Header";
+import Menu from "../../header-menu/Menu";
 import AddHabits from "./AddHabits";
 import HabitsList from "./HabitsList";
 
@@ -63,9 +63,7 @@ export default function Habits() {
             começar a trackear!
           </p>
         ) : (
-          <PositionList enable={enable}>
-            <HabitsList data={data} />
-          </PositionList>
+          <HabitsList setLoading={setLoading} data={data} />
         )}
       </Container>
       <Menu />
@@ -74,7 +72,7 @@ export default function Habits() {
 }
 
 const Container = styled.div`
-  margin: 91px 0;
+  margin: 111px 0;
   padding-left: 16px;
   padding-right: 16px;
 
@@ -99,26 +97,6 @@ const TopContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  ${(props) =>
-    props.enable
-      ? css`
-          width: 340px;
-          position: fixed;
-          top: 92px;
-          left: calc(100vw = 340px / 2);
-        `
-      : ""}
-`;
-
-const PositionList = styled.div`
-  margin-bottom: 110px;
-  ${(props) =>
-    props.enable
-      ? css`
-          margin-top: 337px;
-        `
-      : ""}
 `;
 
 const Button = styled.button`

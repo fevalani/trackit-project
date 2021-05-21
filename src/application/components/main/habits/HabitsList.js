@@ -1,45 +1,27 @@
-import styled, { css, keyframes } from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { TrashOutline } from "react-ionicons";
 import { useContext, useState } from "react";
-import UserContext from "../../contexts/UserContext";
-import axios from "axios";
+import UserContext from "../../../contexts/UserContext";
+import DeleteTask from "./DeleteTask";
 
-import weekdayData from "./weekdayData";
+import weekdayData from "../weekdayData";
 
-export default function HabitsList({ data }) {
+export default function HabitsList({ data, setLoading }) {
   const { user } = useContext(UserContext);
   const [showDeleteButton, setShowDeleteButton] = useState([]);
 
-  function deleteTask(item) {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
-    };
-
-    const request = axios.delete(
-      `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${item.id}`,
-      config
-    );
-
-    request.then(() => {
-      console.log("Excluiu");
-    });
-    request.catch(() => {
-      console.log("deu ruim");
-    });
-  }
-
-  return data.map((item) => (
-    <ContainerHabits key={item.id}>
+  return data.map((item, i) => (
+    <ContainerHabits key={i}>
       <PositionTopHabits>
         <Input>{item.name}</Input>
-        {showDeleteButton === item.id ? (
-          <Button onClick={() => deleteTask(item.id)}>Deletar?</Button>
+        {showDeleteButton === i ? (
+          <Button onClick={() => DeleteTask(user, item.id, setLoading)}>
+            Deletar?
+          </Button>
         ) : (
           <TrashOutline
             onClick={() => {
-              setShowDeleteButton(item.id);
+              setShowDeleteButton(i);
               setTimeout(() => setShowDeleteButton([]), 4000);
             }}
             color="#666666"
@@ -49,11 +31,11 @@ export default function HabitsList({ data }) {
         )}
       </PositionTopHabits>
       <Weekdays>
-        {weekdayData.map((i) =>
-          item.days.includes(i.id) ? (
-            <DaySelected key={i.id}>{i.name}</DaySelected>
+        {weekdayData.map((j, i) =>
+          item.days.includes(i) ? (
+            <DaySelected key={i}>{j.name}</DaySelected>
           ) : (
-            <Day id={i.id}>{i.name}</Day>
+            <Day key={i}>{j.name}</Day>
           )
         )}
       </Weekdays>
